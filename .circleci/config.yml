@@ -8,8 +8,8 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/php:latest
-	  - image: circleci/mysql:5.7
-	  environment:
+      - image: circleci/mysql:5.7
+      environment:
 	          - MYSQL_DATABASE=homestead
 	          - MYSQL_USER=homestead
 			  - MYSQL_PASSWORD=secret
