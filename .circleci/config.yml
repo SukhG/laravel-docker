@@ -1,0 +1,33 @@
+# PHP CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-php/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+      - image: circleci/php:latest
+	  - image: circleci/mysql:5.7
+	  environment:
+	          - MYSQL_DATABASE=homestead
+	          - MYSQL_USER=homestead
+			  - MYSQL_PASSWORD=secret
+			  - MYSQL_ROOT_PASSWORD=secret
+    working_directory: ~/var/www
+
+    steps:
+      - checkout
+	  - name: Install PHP Dependencies
+	         command: apt-get update && apt-get install -y libmcrypt-dev mysql-client libmagickwand-dev --no-install-recommends pecl install imagick mcrypt pdo_mysql
+
+	  - run: composer self-update
+	        - restore_cache:
+	            keys:
+	              - composer-v1-{{ checksum "composer.json" }}
+	              - composer-v1-
+	        - run: composer install -n --prefer-dist
+	        - save_cache:
+	            key: composer-v1-{{ checksum "composer.json" }}
+	            paths:
+	              - vendor
